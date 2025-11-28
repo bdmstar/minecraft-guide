@@ -9,16 +9,16 @@
             --bg-gradient: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 50%, #15202b 100%);
             --card-color: rgba(45, 45, 45, 0.95);
             --text-color: #ffffff;
-            --accent-color: #72bd69; /* 마크 XP바 색상 */
+            --accent-color: #72bd69;
             --accent-hover: #45a049;
-            --highlight-color: #ffd700; /* 금색 강조 */
+            --highlight-color: #ffd700;
         }
 
         body {
             font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
             background: var(--bg-gradient);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite; /* 배경 움직임 */
+            animation: gradientBG 15s ease infinite;
             color: var(--text-color);
             margin: 0;
             display: flex;
@@ -33,20 +33,22 @@
             max-width: 800px;
             background-color: var(--card-color);
             border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); /* 그림자 강화 */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             padding: 40px;
             position: relative;
             text-align: center;
             height: 600px;
+            
+            /* ✨ 중요 변경: space-between 제거하고 위에서부터 채움 */
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            backdrop-filter: blur(10px); /* 유리 효과 */
+            flex-direction: column; 
+            
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             z-index: 10;
         }
 
-        /* 캔버스 (폭죽 효과용) */
+        /* 폭죽 캔버스 */
         #confetti-canvas {
             position: absolute;
             top: 0;
@@ -57,24 +59,27 @@
             z-index: 20;
         }
 
-        /* 슬라이드 애니메이션 변경: 팝업 효과 */
+        /* ✨ 콘텐츠 영역: 남은 공간을 꽉 채움 (flex: 1) */
         .slide {
             display: none;
-            height: 100%;
+            flex: 1; /* 여기가 핵심! 위쪽 공간을 강제로 다 차지함 */
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; /* 내용물은 중앙 정렬 */
             align-items: center;
+            width: 100%;
         }
+        
         .slide.active {
             display: flex;
-            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* 띠용~ 하는 효과 */
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
         h1 { 
             font-size: 2.5rem; 
             margin-bottom: 20px; 
             color: var(--accent-color);
-            text-shadow: 2px 2px 0px #000; /* 글자 입체감 */
+            text-shadow: 2px 2px 0px #000;
+            margin-top: 0; /* 상단 여백 제거 (중앙 정렬 위해) */
         }
         h2 { font-size: 1.8rem; margin-bottom: 15px; text-shadow: 1px 1px 0px #000; }
         p { font-size: 1.1rem; line-height: 1.6; color: #ddd; margin-bottom: 20px; word-break: keep-all; }
@@ -90,7 +95,6 @@
             box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
 
-        /* ✨ 이미지 둥둥 떠다니는 효과 및 셋팅 */
         .guide-image {
             width: 100%;
             max-width: fit-content;
@@ -101,19 +105,26 @@
             display: block;
             border: 2px solid #555;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            animation: float 6s ease-in-out infinite; /* 둥둥~ */
+            animation: float 6s ease-in-out infinite;
         }
 
-        .img-box { display: none; } 
+        /* ✨ 하단 고정 영역 (Footer) 스타일 새로 추가 */
+        .footer-fixed {
+            height: 80px; /* 높이 고정 */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* 아래쪽으로 정렬 */
+            flex-shrink: 0; /* 절대 줄어들지 않음 */
+        }
 
-        /* 버튼 스타일: 마크 버튼 느낌 */
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .nav-buttons { display: flex; justify-content: space-between; align-items: flex-end; }
         
         button {
             background-color: #555;
             color: white;
             border: none;
-            border-bottom: 4px solid #333; /* 버튼 입체감 */
+            border-bottom: 4px solid #333;
             padding: 12px 30px;
             border-radius: 8px;
             font-size: 1rem;
@@ -121,23 +132,14 @@
             font-weight: bold;
             transition: all 0.1s;
         }
-        button:hover {
-            transform: translateY(-2px);
-            background-color: #666;
-        }
-        button:active {
-            transform: translateY(2px);
-            border-bottom: 0px solid #333; /* 눌리는 느낌 */
-            margin-top: 4px;
-        }
-        /* 다음/완료 버튼 강조 */
+        button:hover { transform: translateY(-2px); background-color: #666; }
+        button:active { transform: translateY(2px); border-bottom: 0px solid #333; margin-top: 4px; }
+        
         #nextBtn, button[onclick*="alert"] {
             background-color: var(--accent-color);
             border-bottom: 4px solid #388E3C;
         }
-        #nextBtn:hover, button[onclick*="alert"]:hover {
-            background-color: #81c784;
-        }
+        #nextBtn:hover, button[onclick*="alert"]:hover { background-color: #81c784; }
         button:disabled {
             background-color: #333;
             border-bottom: 4px solid #222;
@@ -146,13 +148,12 @@
             transform: none;
         }
 
-        /* XP바 스타일 진행바 */
         .progress-container {
             width: 100%;
             background-color: #111;
             height: 10px;
             border-radius: 5px;
-            margin-top: 20px;
+            margin-top: 15px; /* 버튼과 간격 */
             border: 1px solid #555;
             overflow: hidden;
             position: relative;
@@ -166,7 +167,6 @@
             box-shadow: 0 0 10px var(--accent-color);
         }
 
-        /* 애니메이션 키프레임 정의 */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -219,7 +219,7 @@
         <div class="slide" id="slide5">
             <h2>4단계: 인스턴스 생성</h2>
             <p>좌측 상단 <strong>[인스턴스 추가]</strong> 클릭!</p>
-            <div style="text-align: left; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; display: inline-block; border: 1px solid #777;">
+            <div style="text-align: left; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; display: inline-block; border: 1px solid #777; margin-bottom: 20px;">
                 1. 이름: <strong>내 야생 서버</strong> (자유)<br>
                 2. 버전: <span class="version-tag">1.12.10</span> 선택<br>
                 3. 모드 로더: <strong style="color:#ffcc80">Fabric</strong> 체크 ✅
@@ -231,20 +231,20 @@
             <h2 style="font-size: 2.5rem;">🎉 준비 완료!</h2>
             <p>목록에 생긴 아이콘을 <strong>더블 클릭</strong> 하세요.</p>
             <p>처음엔 파일을 받느라 조금 걸리지만,<br>곧 큐브 세상이 열립니다!</p>
-            
             <button onclick="alert('즐거운 마인크래프트 되세요!')" style="font-size: 1.2rem; padding: 15px 40px;">🚀 게임 실행하러 가기</button>
         </div>
 
-        <div class="nav-buttons">
-            <button id="prevBtn" onclick="changeSlide(-1)" disabled>이전</button>
-            <div style="color: #aaa; font-size: 0.9rem; padding-top:10px; font-family: monospace;">
-                STEP <span id="currentStep">1</span> / <span id="totalSteps">6</span>
+        <div class="footer-fixed">
+            <div class="nav-buttons">
+                <button id="prevBtn" onclick="changeSlide(-1)" disabled>이전</button>
+                <div style="color: #aaa; font-size: 0.9rem; padding-bottom: 5px; font-family: monospace;">
+                    STEP <span id="currentStep">1</span> / <span id="totalSteps">6</span>
+                </div>
+                <button id="nextBtn" onclick="changeSlide(1)">다음</button>
             </div>
-            <button id="nextBtn" onclick="changeSlide(1)">다음</button>
-        </div>
-
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
         </div>
     </div>
 
@@ -258,32 +258,23 @@
         const stepDisplay = document.getElementById('currentStep');
         const totalDisplay = document.getElementById('totalSteps');
 
-        // 초기 설정
         totalDisplay.innerText = totalSlides;
         updateUI();
 
         function changeSlide(direction) {
             slides[currentSlide].classList.remove('active');
             currentSlide += direction;
-
-            // 범위 체크
             if (currentSlide < 0) currentSlide = 0;
             if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
-
             slides[currentSlide].classList.add('active');
             updateUI();
-
-            // 마지막 슬라이드면 폭죽 터뜨리기
-            if (currentSlide === totalSlides - 1) {
-                fireConfetti();
-            }
+            if (currentSlide === totalSlides - 1) fireConfetti();
         }
 
         function updateUI() {
             prevBtn.disabled = currentSlide === 0;
             nextBtn.disabled = currentSlide === totalSlides - 1;
             
-            // 마지막 슬라이드에서 다음 버튼 숨기기
             if (currentSlide === totalSlides - 1) {
                 nextBtn.style.opacity = "0"; 
                 nextBtn.style.pointerEvents = "none";
@@ -292,58 +283,38 @@
                 nextBtn.style.pointerEvents = "auto";
             }
 
-            // 진행바 업데이트
             const progress = ((currentSlide + 1) / totalSlides) * 100;
             progressBar.style.width = `${progress}%`;
             stepDisplay.innerText = currentSlide + 1;
         }
 
-        /* 🎉 간단한 폭죽(Confetti) 효과 스크립트 */
         function fireConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-
             const particles = [];
-            const particleCount = 150;
-
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 150; i++) {
                 particles.push({
-                    x: canvas.width / 2,
-                    y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 15,
-                    vy: (Math.random() - 0.5) * 15,
-                    life: 100 + Math.random() * 100,
-                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
-                    size: Math.random() * 5 + 2
+                    x: canvas.width / 2, y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 15, vy: (Math.random() - 0.5) * 15,
+                    life: 100 + Math.random() * 100, color: `hsl(${Math.random() * 360}, 70%, 50%)`, size: Math.random() * 5 + 2
                 });
             }
-
             function update() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 let activeParticles = 0;
-
                 particles.forEach(p => {
                     if (p.life > 0) {
-                        p.x += p.vx;
-                        p.y += p.vy;
-                        p.vy += 0.2; // 중력
-                        p.life--;
-                        ctx.fillStyle = p.color;
-                        ctx.fillRect(p.x, p.y, p.size, p.size); // 네모난 픽셀 폭죽
+                        p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.life--;
+                        ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, p.size, p.size);
                         activeParticles++;
                     }
                 });
-
-                if (activeParticles > 0) {
-                    requestAnimationFrame(update);
-                }
+                if (activeParticles > 0) requestAnimationFrame(update);
             }
             update();
         }
-
-        // 창 크기 변경 시 캔버스 리사이즈
         window.addEventListener('resize', () => {
             const canvas = document.getElementById('confetti-canvas');
             canvas.width = window.innerWidth;
