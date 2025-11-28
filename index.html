@@ -6,16 +6,19 @@
     <title>마인크래프트 시작하기 가이드</title>
     <style>
         :root {
-            --bg-color: #1e1e1e;
-            --card-color: #2d2d2d;
+            --bg-gradient: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 50%, #15202b 100%);
+            --card-color: rgba(45, 45, 45, 0.95);
             --text-color: #ffffff;
-            --accent-color: #4CAF50;
-            --secondary-color: #81c784;
+            --accent-color: #72bd69; /* 마크 XP바 색상 */
+            --accent-hover: #45a049;
+            --highlight-color: #ffd700; /* 금색 강조 */
         }
 
         body {
             font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite; /* 배경 움직임 */
             color: var(--text-color);
             margin: 0;
             display: flex;
@@ -30,7 +33,7 @@
             max-width: 800px;
             background-color: var(--card-color);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); /* 그림자 강화 */
             padding: 40px;
             position: relative;
             text-align: center;
@@ -38,131 +41,204 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            backdrop-filter: blur(10px); /* 유리 효과 */
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 10;
         }
 
-        /* 슬라이드 영역 */
+        /* 캔버스 (폭죽 효과용) */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* 슬라이드 애니메이션 변경: 팝업 효과 */
         .slide {
             display: none;
             height: 100%;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.5s ease;
         }
-        .slide.active { display: flex; }
+        .slide.active {
+            display: flex;
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* 띠용~ 하는 효과 */
+        }
 
-        h1 { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent-color); }
-        h2 { font-size: 1.8rem; margin-bottom: 15px; }
+        h1 { 
+            font-size: 2.5rem; 
+            margin-bottom: 20px; 
+            color: var(--accent-color);
+            text-shadow: 2px 2px 0px #000; /* 글자 입체감 */
+        }
+        h2 { font-size: 1.8rem; margin-bottom: 15px; text-shadow: 1px 1px 0px #000; }
         p { font-size: 1.1rem; line-height: 1.6; color: #ddd; margin-bottom: 20px; word-break: keep-all; }
         
-        .highlight { color: var(--secondary-color); font-weight: bold; }
-        .version-tag { background: #444; padding: 2px 8px; border-radius: 4px; border: 1px solid #666; font-family: monospace; }
-        
-        /* -------------------------------------- */
-        /* ✨ 새로 적용된 이미지 스타일 (고정 높이 및 크롭) */
+        .highlight { color: var(--highlight-color); font-weight: bold; text-decoration: underline; text-decoration-color: rgba(255, 215, 0, 0.5); }
+        .version-tag { 
+            background: #444; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            border: 2px solid #777; 
+            font-family: monospace; 
+            color: #fff;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        /* ✨ 이미지 둥둥 떠다니는 효과 및 셋팅 */
         .guide-image {
             width: 100%;
             max-width: fit-content;
-            height: 250px; /* 모든 이미지의 높이 고정 */
-            object-fit: scale-down; /* 영역을 꽉 채우고, 넘치는 부분은 잘라냄 (크롭) */
+            height: 250px;
+            object-fit: scale-down;
             border-radius: 10px;
             margin: 0 auto 20px auto;
             display: block;
-            border: 1px solid #555;
+            border: 2px solid #555;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite; /* 둥둥~ */
         }
-        /* -------------------------------------- */
 
-        /* 기존 img-box (사용하지 않으므로 주석 처리하거나 제거 가능) */
         .img-box { display: none; } 
 
-        /* 네비게이션 및 진행바 스타일 */
+        /* 버튼 스타일: 마크 버튼 느낌 */
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        
         button {
-            background-color: var(--accent-color);
+            background-color: #555;
             color: white;
             border: none;
-            padding: 12px 24px;
+            border-bottom: 4px solid #333; /* 버튼 입체감 */
+            padding: 12px 30px;
             border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
+            transition: all 0.1s;
         }
-        button:hover { background-color: #45a049; }
-        button:disabled { background-color: #555; cursor: not-allowed; }
+        button:hover {
+            transform: translateY(-2px);
+            background-color: #666;
+        }
+        button:active {
+            transform: translateY(2px);
+            border-bottom: 0px solid #333; /* 눌리는 느낌 */
+            margin-top: 4px;
+        }
+        /* 다음/완료 버튼 강조 */
+        #nextBtn, button[onclick*="alert"] {
+            background-color: var(--accent-color);
+            border-bottom: 4px solid #388E3C;
+        }
+        #nextBtn:hover, button[onclick*="alert"]:hover {
+            background-color: #81c784;
+        }
+        button:disabled {
+            background-color: #333;
+            border-bottom: 4px solid #222;
+            color: #777;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* XP바 스타일 진행바 */
         .progress-container {
             width: 100%;
-            background-color: #444;
-            height: 6px;
-            border-radius: 3px;
+            background-color: #111;
+            height: 10px;
+            border-radius: 5px;
             margin-top: 20px;
+            border: 1px solid #555;
+            overflow: hidden;
+            position: relative;
         }
         .progress-bar {
             height: 100%;
-            background-color: var(--accent-color);
+            background: linear-gradient(90deg, #72bd69, #a5d6a7);
             width: 0%;
-            border-radius: 3px;
-            transition: width 0.3s;
+            border-radius: 5px;
+            transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 10px var(--accent-color);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        /* 애니메이션 키프레임 정의 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+            60% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
     </style>
 </head>
 <body>
+    <canvas id="confetti-canvas"></canvas>
+
     <div class="container">
         <div class="slide active" id="slide1">
             <h1>⛏️ 마인크래프트 시작하기</h1>
-            <p>뉴비를 위한 <span class="highlight">Fabric + Prism Launcher</span> 설치 가이드입니다.</p>
-            <p>복잡한 파일 이동 없이, 클릭 몇 번으로<br>최신 버전(<span class="version-tag">1.12.10</span>)을 실행할 수 있습니다.</p>
+            <p>뉴비를 위한 <span class="highlight">Fabric + Prism Launcher</span> 가이드</p>
+            <p>복잡한 설정 NO! 클릭 몇 번으로<br>최신 버전(<span class="version-tag">1.12.10</span>) 야생을 떠나보세요.</p>
             <img class="guide-image" src="images/mining_in_the_sunset.jpg" alt="마인크래프트 광산 배경">
         </div>
 
         <div class="slide" id="slide2">
             <h2>1단계: Java 설치하기</h2>
-            <p>마인크래프트를 실행하려면 <strong>Java(자바)</strong>가 필요합니다. 이미 설치되어 있다면 이 단계는 건너뛰어도 됩니다.</p>
+            <p>마인크래프트의 심장 <strong>Java(자바)</strong>를 설치합니다.<br>이미 있다면 패스!</p>
             <img class="guide-image" src="images/jdk-download.png" alt="Adoptium JDK 다운로드 화면">
-            <p>👉 <a href="https://adoptium.net/temurin/releases?version=21&os=any&arch=any" target="_blank" style="color:var(--secondary-color);">여기서 다운로드 (Adoptium)</a></p>
+            <p>👉 <a href="https://adoptium.net/temurin/releases?version=21&os=any&arch=any" target="_blank" style="color:var(--highlight-color);">여기서 다운로드 (Adoptium)</a></p>
         </div>
 
         <div class="slide" id="slide3">
-            <h2>2단계: Prism Launcher 설치</h2>
-            <p>공식 런처 대신 <strong>Prism Launcher</strong>를 씁니다.<br>모드 설치와 버전 관리가 훨씬 쉽기 때문입니다.</p>
-            <img class="guide-image" src="images/prism.png" alt="Prism Launcher 아이콘 및 다운로드 화면">
-            <p>윈도우는 .exe / 맥은 .zip(dmg) 파일을 받으세요.<br>👉 <a href="https://prismlauncher.org/download/" target="_blank" style="color:var(--secondary-color);">Prism Launcher 공홈</a></p>
+            <h2>2단계: 런처 다운로드</h2>
+            <p>공식 런처보다 100배 편한 <strong>Prism Launcher</strong>입니다.<br>모드 관리의 신세계를 경험하세요.</p>
+            <img class="guide-image" src="images/prism.png" alt="Prism Launcher 아이콘">
+            <p>윈도우는 .exe / 맥은 .zip(dmg)<br>👉 <a href="https://prismlauncher.org/download/" target="_blank" style="color:var(--highlight-color);">Prism Launcher 공홈</a></p>
         </div>
 
         <div class="slide" id="slide4">
-            <h2>3단계: 계정 로그인</h2>
-            <p>런처를 실행하고 오른쪽 위의 <span class="highlight">[계정]</span> 버튼을 누르세요.<br><strong>Microsoft 계정 추가</strong>를 선택하고 로그인을 진행합니다.</p>
-            <img class="guide-image" src="images/add_acount.png" alt="Prism Launcher 계정 추가 버튼">
-            <p class="highlight">※ 정품 마인크래프트 계정이 꼭 필요합니다!</p>
+            <h2>3단계: 계정 연결</h2>
+            <p>런처 우측 상단 <span class="highlight">[계정]</span> 클릭!<br><strong>Microsoft 계정</strong>으로 로그인해주세요.</p>
+            <img class="guide-image" src="images/add_acount.png" alt="계정 추가 화면">
+            <p class="highlight" style="font-size:0.9rem;">※ 정품 구매한 계정 필수!</p>
         </div>
 
         <div class="slide" id="slide5">
-            <h2>4단계: 게임 설치 (인스턴스 생성)</h2>
-            <p>좌측 상단 <strong>[인스턴스 추가]</strong> 버튼을 누르세요.</p>
-            <div style="text-align: left; background: #333; padding: 15px; border-radius: 10px; display: inline-block;">
+            <h2>4단계: 인스턴스 생성</h2>
+            <p>좌측 상단 <strong>[인스턴스 추가]</strong> 클릭!</p>
+            <div style="text-align: left; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; display: inline-block; border: 1px solid #777;">
                 1. 이름: <strong>내 야생 서버</strong> (자유)<br>
                 2. 버전: <span class="version-tag">1.12.10</span> 선택<br>
-                3. 모드 로더: <strong>Fabric</strong> 체크 ✅
+                3. 모드 로더: <strong style="color:#ffcc80">Fabric</strong> 체크 ✅
             </div>
-            <img class="guide-image" src="images/add_instance.png" alt="Prism Launcher 인스턴스 추가 팝업">
+            <img class="guide-image" src="images/add_instance.png" alt="인스턴스 설정 화면">
         </div>
 
         <div class="slide" id="slide6">
-            <h2>🎉 준비 완료!</h2>
-            <p>이제 목록에 방금 만든 아이콘이 생겼을 겁니다.</p>
-            <p>아이콘을 <strong>더블 클릭</strong>하면 게임이 시작됩니다.<br>처음에는 파일을 받느라 시간이 좀 걸릴 수 있습니다.</p>
+            <h2 style="font-size: 2.5rem;">🎉 준비 완료!</h2>
+            <p>목록에 생긴 아이콘을 <strong>더블 클릭</strong> 하세요.</p>
+            <p>처음엔 파일을 받느라 조금 걸리지만,<br>곧 큐브 세상이 열립니다!</p>
             
-            <button onclick="alert('이제 게임을 켜러 가볼까요?')" style="background-color: #2196F3;">가이드 종료</button>
+            <button onclick="alert('즐거운 마인크래프트 되세요!')" style="font-size: 1.2rem; padding: 15px 40px;">🚀 게임 실행하러 가기</button>
         </div>
 
         <div class="nav-buttons">
             <button id="prevBtn" onclick="changeSlide(-1)" disabled>이전</button>
-            <div style="color: #666; font-size: 0.9rem; padding-top:10px;">
-                <span id="currentStep">1</span> / <span id="totalSteps">6</span>
+            <div style="color: #aaa; font-size: 0.9rem; padding-top:10px; font-family: monospace;">
+                STEP <span id="currentStep">1</span> / <span id="totalSteps">6</span>
             </div>
             <button id="nextBtn" onclick="changeSlide(1)">다음</button>
         </div>
@@ -196,17 +272,83 @@
 
             slides[currentSlide].classList.add('active');
             updateUI();
+
+            // 마지막 슬라이드면 폭죽 터뜨리기
+            if (currentSlide === totalSlides - 1) {
+                fireConfetti();
+            }
         }
 
         function updateUI() {
             prevBtn.disabled = currentSlide === 0;
             nextBtn.disabled = currentSlide === totalSlides - 1;
-            if (currentSlide === totalSlides - 1) nextBtn.style.opacity = "0"; else nextBtn.style.opacity = "1";
+            
+            // 마지막 슬라이드에서 다음 버튼 숨기기
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.style.opacity = "0"; 
+                nextBtn.style.pointerEvents = "none";
+            } else {
+                nextBtn.style.opacity = "1";
+                nextBtn.style.pointerEvents = "auto";
+            }
 
+            // 진행바 업데이트
             const progress = ((currentSlide + 1) / totalSlides) * 100;
             progressBar.style.width = `${progress}%`;
             stepDisplay.innerText = currentSlide + 1;
         }
+
+        /* 🎉 간단한 폭죽(Confetti) 효과 스크립트 */
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const particleCount = 150;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 15,
+                    vy: (Math.random() - 0.5) * 15,
+                    life: 100 + Math.random() * 100,
+                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                    size: Math.random() * 5 + 2
+                });
+            }
+
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let activeParticles = 0;
+
+                particles.forEach(p => {
+                    if (p.life > 0) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.2; // 중력
+                        p.life--;
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(p.x, p.y, p.size, p.size); // 네모난 픽셀 폭죽
+                        activeParticles++;
+                    }
+                });
+
+                if (activeParticles > 0) {
+                    requestAnimationFrame(update);
+                }
+            }
+            update();
+        }
+
+        // 창 크기 변경 시 캔버스 리사이즈
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
