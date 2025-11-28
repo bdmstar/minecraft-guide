@@ -1,261 +1,201 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>마인크래프트 Fabric 시작하기 가이드</title>
+  <style>
+    :root {
+      --bg-color: #1e1e1e;
+      --card-color: #2d2d2d;
+      --text-color: #ffffff;
+      --accent-color: #4CAF50;
+      --secondary-color: #81c784;
+    }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background-color: var(--card-color);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      padding: 40px;
+      position: relative;
+      text-align: center;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .slide {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+    .slide.active { display: flex; }
+    h1 { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent-color); }
+    h2 { font-size: 1.8rem; margin-bottom: 15px; }
+    p { font-size: 1.1rem; line-height: 1.6; color: #ddd; margin-bottom: 20px; word-break: keep-all; }
+    .highlight { color: var(--secondary-color); font-weight: bold; }
+    .version-tag { background: #444; padding: 2px 8px; border-radius: 4px; border: 1px solid #666; font-family: monospace; }
+    .img-box {
+      width: 100%;
+      max-width: 500px;
+      height: 250px;
+      background-color: #404040;
+      border: 2px dashed #666;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px auto;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+    button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover { background-color: #45a049; }
+    button:disabled { background-color: #555; cursor: not-allowed; }
+    .progress-container {
+      width: 100%;
+      background-color: #444;
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 20px;
+    }
+    .progress-bar {
+      height: 100%;
+      background-color: var(--accent-color);
+      width: 0%;
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="ko"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;마인크래프트 Fabric 시작하기 가이드&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-color: #1e1e1e;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--card-color: #2d2d2d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-color: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-color: #4CAF50;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--secondary-color: #81c784;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 90%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 800px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--card-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 30px rgba(0,0,0,0.5);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 600px; /* 고정 높이 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 슬라이드 영역 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.slide {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: none; /* 기본 숨김 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: fadeIn 0.5s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.slide.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent-color); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>h2 { font-size: 1.8rem; margin-bottom: 15px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>p { font-size: 1.1rem; line-height: 1.6; color: #ddd; margin-bottom: 20px; word-break: keep-all;}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.highlight { color: var(--secondary-color); font-weight: bold; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.version-tag { background: #444; padding: 2px 8px; border-radius: 4px; border: 1px solid #666; font-family: monospace; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 이미지 플레이스홀더 (실제 사용시 img 태그로 교체 가능) */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.img-box {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 500px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 250px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #404040;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px dashed #666;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto 20px auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #aaa;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 네비게이션 버튼 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.nav-buttons {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>button {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 24px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>button:hover { background-color: #45a049; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>button:disabled { background-color: #555; cursor: not-allowed; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 진행바 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.progress-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #444;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 3px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.progress-bar {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 0%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 3px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: width 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>from { opacity: 0; transform: translateY(10px); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>to { opacity: 1; transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slide active" id="slide1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;⛏️ 마인크래프트 시작하기&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;뉴비를 위한 &lt;span class="highlight"&gt;Fabric + Prism Launcher&lt;/span&gt; 설치 가이드입니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;복잡한 파일 이동 없이, 클릭 몇 번으로&lt;br&gt;최신 버전(&lt;span class="version-tag"&gt;1.12.10&lt;/span&gt;)을 실행하는 방법을 알려드립니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="img-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>(여기에 멋진 마크 스크린샷이나 로고를 넣으세요)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slide" id="slide2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;1단계: Java 설치하기&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;마인크래프트를 실행하려면 &lt;strong&gt;Java(자바)&lt;/strong&gt;라는 프로그램이 필요합니다.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>이미 설치되어 있다면 이 단계는 건너뛰어도 됩니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="img-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>[다운로드 사이트 화면 예시]&lt;br&gt;Java 17 또는 21 버전을 권장합니다.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;👉 &lt;a href="https://adoptium.net/" target="_blank" style="color:var(--secondary-color);"&gt;여기서 다운로드 (Adoptium)&lt;/a&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slide" id="slide3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;2단계: Prism Launcher 설치&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;공식 런처 대신 &lt;strong&gt;Prism Launcher&lt;/strong&gt;를 씁니다.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>모드 설치와 버전 관리가 압도적으로 쉽기 때문입니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="img-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>[Prism Launcher 홈페이지 화면]&lt;br&gt;Download 버튼을 찾아 누르세요.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;윈도우는 .exe / 맥은 .zip(dmg) 파일을 받으세요.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>👉 &lt;a href="https://prismlauncher.org/download/" target="_blank" style="color:var(--secondary-color);"&gt;Prism Launcher 공식 홈페이지&lt;/a&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slide" id="slide4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;3단계: 계정 로그인&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;런처를 실행하고 오른쪽 위의 &lt;span class="highlight"&gt;[계정]&lt;/span&gt; 버튼을 누르세요.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Microsoft 계정 추가&lt;/strong&gt;를 선택하고 로그인을 진행합니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="img-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>[런처 우측 상단 메뉴 화면]&lt;br&gt;계정 관리 -&gt; Microsoft 계정 추가</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="highlight"&gt;※ 정품 마인크래프트 계정이 꼭 필요합니다!&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slide" id="slide5"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;4단계: 게임 설치 (인스턴스 생성)&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;좌측 상단 &lt;strong&gt;[인스턴스 추가]&lt;/strong&gt; 버튼을 누르세요.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="text-align: left; background: #333; padding: 15px; border-radius: 10px; display: inline-block;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>1. 이름: &lt;strong&gt;내 야생 서버&lt;/strong&gt; (자유)&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>2. 버전: &lt;span class="version-tag"&gt;1.12.10&lt;/span&gt; 선택&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>3. 모드 로더: &lt;strong&gt;Fabric&lt;/strong&gt; 체크 ✅&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="img-box" style="margin-top:15px; height: 150px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>[인스턴스 생성 팝업창 예시]&lt;br&gt;버전과 Fabric을 체크하는 화면</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slide" id="slide6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;🎉 준비 완료!&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;이제 목록에 방금 만든 아이콘이 생겼을 겁니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;아이콘을 &lt;strong&gt;더블 클릭&lt;/strong&gt;하면 게임이 시작됩니다.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>처음에는 파일을 받느라 시간이 좀 걸릴 수 있습니다.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="img-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>[실행 버튼을 누르는 화면]&lt;br&gt;즐거운 마크 되세요!</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="alert('이제 게임을 켜러 가볼까요?')" style="background-color: #2196F3;"&gt;가이드 종료&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="nav-buttons"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="prevBtn" onclick="changeSlide(-1)" disabled&gt;이전&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="color: #666; font-size: 0.9rem; padding-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span id="currentStep"&gt;1&lt;/span&gt; / &lt;span id="totalSteps"&gt;6&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="nextBtn" onclick="changeSlide(1)"&gt;다음&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="progress-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="progress-bar" id="progressBar"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let currentSlide = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const slides = document.querySelectorAll('.slide');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const totalSlides = slides.length;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const progressBar = document.getElementById('progressBar');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const prevBtn = document.getElementById('prevBtn');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const nextBtn = document.getElementById('nextBtn');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const stepDisplay = document.getElementById('currentStep');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const totalDisplay = document.getElementById('totalSteps');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// 초기 설정</p>
-<p class="p1"><span class="Apple-converted-space">    </span>totalDisplay.innerText = totalSlides;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>updateUI();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function changeSlide(direction) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>slides[currentSlide].classList.remove('active');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>currentSlide += direction;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 범위 체크</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (currentSlide &lt; 0) currentSlide = 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (currentSlide &gt;= totalSlides) currentSlide = totalSlides - 1;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>slides[currentSlide].classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>updateUI();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateUI() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 버튼 활성화/비활성화</p>
-<p class="p1"><span class="Apple-converted-space">        </span>prevBtn.disabled = currentSlide === 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>nextBtn.disabled = currentSlide === totalSlides - 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(currentSlide === totalSlides - 1) nextBtn.style.opacity = "0"; // 마지막엔 다음 버튼 숨김</p>
-<p class="p1"><span class="Apple-converted-space">        </span>else nextBtn.style.opacity = "1";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 진행바 및 텍스트 업데이트</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const progress = ((currentSlide + 1) / totalSlides) * 100;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>progressBar.style.width = `${progress}%`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>stepDisplay.innerText = currentSlide + 1;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div class="container">
+    <div class="slide active" id="slide1">
+      <h1>⛏️ 마인크래프트 시작하기</h1>
+      <p>뉴비를 위한 <span class="highlight">Fabric + Prism Launcher</span> 설치 가이드입니다.</p>
+      <p>복잡한 파일 이동 없이, 클릭 몇 번으로<br>최신 버전(<span class="version-tag">1.12.10</span>)을 실행할 수 있습니다.</p>
+      <div class="img-box">(여기에 멋진 마크 스크린샷이나 로고를 넣으세요)</div>
+    </div>
+
+    <div class="slide" id="slide2">
+      <h2>1단계: Java 설치하기</h2>
+      <p>마인크래프트를 실행하려면 <strong>Java(자바)</strong>가 필요합니다. 이미 설치되어 있다면 이 단계는 건너뛰어도 됩니다.</p>
+      <div class="img-box">[다운로드 사이트 화면 예시]<br>Java 17 또는 21 버전을 권장합니다.</div>
+      <p>👉 <a href="https://adoptium.net/" target="_blank" style="color:var(--secondary-color);">여기서 다운로드 (Adoptium)</a></p>
+    </div>
+
+    <div class="slide" id="slide3">
+      <h2>2단계: Prism Launcher 설치</h2>
+      <p>공식 런처 대신 <strong>Prism Launcher</strong>를 씁니다.<br>모드 설치와 버전 관리가 훨씬 쉽기 때문입니다.</p>
+      <div class="img-box">[Prism Launcher 홈페이지 화면]<br>Download 버튼을 찾아 누르세요.</div>
+      <p>윈도우는 .exe / 맥은 .zip(dmg) 파일을 받으세요.<br>👉 <a href="https://prismlauncher.org/download/" target="_blank" style="color:var(--secondary-color);">Prism Launcher 공홈</a></p>
+    </div>
+
+    <div class="slide" id="slide4">
+      <h2>3단계: 계정 로그인</h2>
+      <p>런처를 실행하고 오른쪽 위의 <span class="highlight">[계정]</span> 버튼을 누르세요.<br><strong>Microsoft 계정 추가</strong>를 선택하고 로그인을 진행합니다.</p>
+      <div class="img-box">[런처 우측 상단 메뉴 화면]<br>계정 관리 → Microsoft 계정 추가</div>
+      <p class="highlight">※ 정품 마인크래프트 계정이 꼭 필요합니다!</p>
+    </div>
+
+    <div class="slide" id="slide5">
+      <h2>4단계: 게임 설치 (인스턴스 생성)</h2>
+      <p>좌측 상단 <strong>[인스턴스 추가]</strong> 버튼을 누르세요.</p>
+      <div style="text-align: left; background: #333; padding: 15px; border-radius: 10px; display: inline-block;">
+        1. 이름: <strong>내 야생 서버</strong> (자유)<br>
+        2. 버전: <span class="version-tag">1.12.10</span> 선택<br>
+        3. 모드 로더: <strong>Fabric</strong> 체크 ✅
+      </div>
+      <div class="img-box" style="margin-top:15px; height: 150px;">[인스턴스 생성 팝업창 예시]<br>버전과 Fabric을 체크하는 화면</div>
+    </div>
+
+    <div class="slide" id="slide6">
+      <h2>🎉 준비 완료!</h2>
+      <p>이제 목록에 방금 만든 아이콘이 생겼을 겁니다.</p>
+      <p>아이콘을 <strong>더블 클릭</strong>하면 게임이 시작됩니다.<br>처음에는 파일을 받느라 시간이 좀 걸릴 수 있습니다.</p>
+      <div class="img-box">[실행 버튼을 누르는 화면]<br>즐거운 마크 되세요!</div>
+      <button onclick="alert('이제 게임을 켜러 가볼까요?')" style="background-color: #2196F3;">가이드 종료</button>
+    </div>
+
+    <div class="nav-buttons">
+      <button id="prevBtn" onclick="changeSlide(-1)" disabled>이전</button>
+      <div style="color: #666; font-size: 0.9rem; padding-top:10px;">
+        <span id="currentStep">1</span> / <span id="totalSteps">6</span>
+      </div>
+      <button id="nextBtn" onclick="changeSlide(1)">다음</button>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const stepDisplay = document.getElementById('currentStep');
+    const totalDisplay = document.getElementById('totalSteps');
+
+    // 초기 설정
+    totalDisplay.innerText = totalSlides;
+    updateUI();
+
+    function changeSlide(direction) {
+      slides[currentSlide].classList.remove('active');
+      currentSlide += direction;
+
+      // 범위 체크
+      if (currentSlide < 0) currentSlide = 0;
+      if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+
+      slides[currentSlide].classList.add('active');
+      updateUI();
+    }
+
+    function updateUI() {
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+      if (currentSlide === totalSlides - 1) nextBtn.style.opacity = "0"; else nextBtn.style.opacity = "1";
+
+      const progress = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progress}%`;
+      stepDisplay.innerText = currentSlide + 1;
+    }
+  </script>
 </body>
 </html>
