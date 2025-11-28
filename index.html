@@ -108,6 +108,37 @@
             animation: float 6s ease-in-out infinite;
         }
 
+        /* 새로 추가: 이미지 두 개를 가로로 배치하는 행 */
+        .image-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* 화면 좁아지면 아래로 쌓임 */
+        }
+        /* 행 안의 각 이미지(사이드 이미지) 스타일
+           -> guide-image와 동일한 높이(250px)를 주어 두 이미지 크기를 같게 함 */
+        .side-image {
+            flex: 0 1 calc(50% - 6px); /* 두 개가 좌우로 균등 분할 */
+            width: calc(50% - 6px);
+            height: 250px; /* guide-image와 동일 높이 */
+            object-fit: cover; /* 동일한 영역을 채우도록 설정 (필요시 cover -> contain/scale-down 변경) */
+            border-radius: 10px;
+            border: 2px solid #555;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* 작은 화면에서는 세로로 쌓이게 함 */
+        @media (max-width: 640px) {
+            .side-image {
+                flex: 0 1 100%;
+                width: 100%;
+            }
+        }
+
         /* ✨ 하단 고정 영역 (Footer) 스타일 새로 추가 */
         .footer-fixed {
             height: 80px; /* 높이 고정 */
@@ -224,7 +255,13 @@
                 2. 버전: <span class="version-tag">1.12.10</span> 선택<br>
                 3. 모드 로더: <strong style="color:#ffcc80">Fabric</strong> 체크 ✅
             </div>
-            <img class="guide-image" src="images/add_instance.png" alt="인스턴스 설정 화면">
+
+            <!-- 이미지 2개를 좌우로 나란히 배치 (같은 크기 적용) -->
+            <div class="image-row">
+                <img class="guide-image side-image" src="images/add_instance.png" alt="인스턴스 설정 화면 - 좌측">
+                <!-- 두번째 이미지는 프로젝트에 추가하세요 (예: images/add_instance_2.png) -->
+                <img class="guide-image side-image" src="images/add_instance2.png" alt="인스턴스 설정 화면 - 우측">
+            </div>
         </div>
 
         <div class="slide" id="slide6">
